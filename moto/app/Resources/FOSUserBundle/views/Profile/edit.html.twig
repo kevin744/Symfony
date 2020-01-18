@@ -1,0 +1,72 @@
+{% extends "::base.html.twig" %}
+
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-offset-4 col-md-4">
+
+            <!-- Profile Image -->
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    <img class="profile-user-img img-responsive img-circle" src="{{ asset('bundles/app/img/user1-128x128.jpg') }}" alt="User profile picture">
+                    <hr>
+                    <form name="fos_user_profile_form" method="post" action="{{ path('fos_user_profile_edit') }}"
+                          class="fos_user_profile_edit" _lpchecked="1">
+                        <div id="fos_user_profile_form">
+                            <div class="form-group has-feedback">
+                                <label for="fos_user_profile_form_username" class="required">Username</label>
+                                <input class="form-control" type="text" id="fos_user_profile_form_username" name="fos_user_profile_form[username]" required="required" maxlength="180"
+                                       pattern=".{2,}" autocomplete="off">
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label for="fos_user_profile_form_email" class="required">Email</label>
+                                <input class="form-control" type="email" id="fos_user_profile_form_email" name="fos_user_profile_form[email]"
+                                       required="required" value="{{ app.user.email }}" autocomplete="off"></div>
+                            <div class="form-group has-feedback">
+                                <label for="fos_user_profile_form_current_password" class="required">Current password</label>
+                                <input class="form-control" type="password" id="fos_user_profile_form_current_password"
+                                        name="fos_user_profile_form[current_password]" required="required" autocomplete="off">
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label for="fos_user_profile_form_firstname" class="required">Firstname</label>
+                                <input class="form-control" type="text" id="fos_user_profile_form_firstname" name="fos_user_profile_form[firstname]" required="required" maxlength="255" value="{{ app.user.firstname }}">
+                            </div>
+
+                            <div class="form-group has-feedback">
+                                <label for="fos_user_profile_form_lastname" class="required">Lastname</label>
+                                <input class="form-control" type="text" id="fos_user_profile_form_lastname" name="fos_user_profile_form[lastname]" required="required" maxlength="255" value="{{ app.user.lastname }}">
+                            </div>
+
+                            <div class="form-group has-feedback">
+                                <label for="fos_user_profile_form_picture" class="required">User profile picture</label>
+                                <input class="form-control" type="file" id="fos_user_profile_form_picture" name="fos_user_profile_form[picture]" required="required">
+                            </div>
+
+                            <div class="form-group has-feedback">
+                                <label for="fos_user_profile_form_dob" class="required">Dob</label>
+                                <input class="form-control" type="date" id="fos_user_profile_form_dob" name="fos_user_profile_form[dob]" required="required">
+                            </div>
+
+                            <div class="form-group has-feedback">
+                                <label for="fos_user_profile_form_job" class="required">Job</label>
+                                <input class="form-control" type="text" id="fos_user_profile_form_job" name="fos_user_profile_form[job]" required="required" maxlength="255" value="{{ app.user.job }}">
+                            </div>
+
+                            {{ form_widget(form._token) }}
+                        </div>
+                        <div>
+                            <input class="btn btn-primary btn-block" type="submit" value="Update">
+                        </div>
+                    </form>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+
+    </div>
+
+{% endblock %}

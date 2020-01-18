@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">{{ mail.subject }}</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body no-padding">
+            <div class="mailbox-read-info">
+                <h5>From: {{ mail.createdBy.email }}
+                    <span class="mailbox-read-time pull-right">{{ mail.createdAt|date('d/m/y H:m:i') }}</span></h5>
+            </div>
+            <!-- /.mailbox-read-info -->
+
+            <!-- /.mailbox-read-message -->
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            {{ mail.body }}
+        </div>
+        <!-- /.box-footer -->
+        <div class="box-footer">
+            <div class="form-group">
+                <p class="" id="error-message" style="color: red;"></p>
+                <textarea class="form-control" name="reply-txt" id="reply-txt" cols="30" rows="3"></textarea>
+            </div>
+
+            <a href="{{ path('mails_index') }}" type="button" class="btn btn-default pull-right"><i class="fa fa-backward"></i> Back to list</a>
+            <button type="button" id="send-message-btn" class="btn btn-default pull-right"><i class="fa fa-reply"></i> Reply</button>
+            {{ form_start(delete_form) }}
+                <input class="btn btn-default" type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+
+        </div>
+        <!-- /.box-footer -->
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+        $("#send-message-btn").click(function () {
+            console.log("reply");
+            var createdBy = "{{ mail.createdBy.id }}";
+            var sendTo = "{{ mail.sendTo.id }}";
+            var user = "{{ app.user.id }}";
+            var replyTo = "";
+            if(user == createdBy){
+                replyTo = sendTo;
+            }else{
+                replyTo = createdBy;
+            }
+
+            console.log("Created by: ", createdBy, " - send to : ", sendTo, " - Reply to ", replyTo);
+
+            var subject = "RE: {{ mail.subject }}";
+            var body = $("#reply-txt").val();
+            var error_message = "";
+
+            if(body==""){
+                error_message = "Error: Body of your message is empty !";
+                $("#error-message").text(error_message);
+                return;
+            }
+            $("#error-message").text(error_message);
+
+            console.log("Subject: ",subject);
+            console.log("Body: ",body);
+            console.log("send message to : ", replyTo );
+
+            $.ajax({
+                url: "/mails/new",
+                method: "post",
+                data: {
+                    "friendId": replyTo,
+                    "subject": subject,
+                    "body": body
+                },
+                dataType: "json",
+                success: function(json){
+                    //show success alert
+                    window.location.replace("/mails/");
+                },
+                error: function (xhr,status,error) {
+                    $("#error-message").text(error);
+                    console.log(error);
+                }
+            });
+
+        });
+
+    </script>
+{% endblock %}

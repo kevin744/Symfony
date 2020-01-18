@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Friendship</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ friendship.id }}</td>
+            </tr>
+            <tr>
+                <th>Createdat</th>
+                <td>{% if friendship.createdAt %}{{ friendship.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Isaccepted</th>
+                <td>{% if friendship.isAccepted %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Acceptedon</th>
+                <td>{% if friendship.acceptedOn %}{{ friendship.acceptedOn|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('api_friendship_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('api_friendship_edit', { 'id': friendship.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

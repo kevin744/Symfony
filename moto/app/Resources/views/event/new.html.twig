@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Event creation</h1>
+<div class="row">
+<div class="col-lg-6 col-sm-12">
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <input type="submit" value="Create" />
+    {{ form_end(form) }}
+</div>
+
+</div>
+    <a class="btn btn-default" href="{{ path('event_index') }}">Back to the list</a>
+{% endblock %}

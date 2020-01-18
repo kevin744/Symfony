@@ -1,0 +1,164 @@
+{% extends 'base.html.twig' %}
+{% block title %}Accueil!{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="box box-widget">
+                <div class="box-header with-border">
+                    <h3>What would you like to share ?</h3>
+                    {% for fr in friendship_requests %}
+                        {{ fr.user.username }} wants to be friend with {{ fr.friend.username }}
+                    {% endfor %}
+                    <div class="box-tools">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+
+                    <form action="{{ path('api_posts_new') }}" method="post" enctype="multipart/form-data">
+
+                        <div id="appbundle_post">
+                            <div class="form-group has-feedback">
+                                <label for="appbundle_post_title" class="required">Title</label>
+                                <input class="form-control" type="text" id="appbundle_post_title" name="appbundle_post[title]" required="required" maxlength="255">
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label for="appbundle_post_content" class="required">Content</label>
+                                <textarea class="form-control" id="appbundle_post_content" name="appbundle_post[content]" required="required"></textarea>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label for="appbundle_post_attached">Attached file</label>
+                                <input type="file" class="form-control" id="appbundle_post_attached" name="appbundle_post[attached]">
+                            </div>
+                            {{ form_widget(form._token) }}
+                        </div>
+                        <input class="btn btn-primary btn-block btn-flat" type="submit" value="Post">
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            {% for post in posts %}
+
+                <div class="box box-widget">
+                    <div class="box-header with-border">
+                        <div class="user-block">
+                            <img class="img-circle" src="{{ asset('bundles/app/img/user1-128x128.jpg') }}" alt="User Image">
+                            <span class="username"><a href="{{ path('friend_profile', {'username':post.createdBy.username}) }}">{{ post.createdBy.firstname }} {{ post.createdBy.lastname }}</a></span>
+                            <span class="description">Shared - {{ post.createdAt|date('d-M-Y H:i:s') }}</span>
+                        </div>
+                        <!-- /.user-block -->
+                        <div class="box-tools">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                        <!-- /.box-tools -->
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <!-- post text -->
+                        <h3>{{ post.title }}</h3>
+                        <p>
+                            {{ post.content }}
+                        </p>
+                        <!-- Social sharing buttons -->
+                        {% if post.attached %}
+                            <a target="_blank" href="{{ asset('uploads/files/' ~ post.attached) }}" type="button" class="btn btn-default btn-xs"><i class="fa fa-file"></i> Download attached file</a>
+                        {% endif %}
+                        <span class="pull-right text-muted">{{ post.comments|length }} comments</span>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer box-comments">
+                        {% if post.comments|length > 0 %}
+                        {% for comment in post.comments %}
+                            <div class="box-comment">
+                                <!-- User image -->
+                                <img class="img-circle img-sm" src="{{ asset('bundles/app/img/user1-128x128.jpg') }}" alt="User Image">
+
+                                <div class="comment-text">
+                                  <span class="username">
+                                    {{ comment.createdBy.firstname }} {{ comment.createdBy.lastname }}
+                                    <span class="text-muted pull-right">{{ comment.createdAt|date('d/M/Y H:i:s') }}</span>
+                                  </span><!-- /.username -->
+                                    {{ comment.comment }}
+                                </div>
+                                <!-- /.comment-text -->
+                            </div>
+                        <!-- /.box-comment -->
+                        {% endfor %}
+                        {% else %}
+                            <p>Feel free to let the first comment !</p>
+                        {% endif %}
+                    </div>
+                    <!-- /.box-footer -->
+                    <div class="box-footer">
+
+
+
+                        <form action="{{ path('api_comments_new') }}" name="appbundle_comments" method="post">
+                            <div id="appbundle_comments">
+                                <img class="img-responsive img-circle img-sm" src="{{ asset('bundles/app/img/user4-128x128.jpg') }}" alt="Alt Text">
+                                <div class="img-push">
+                                    <input type="text" class="form-control input-sm" id="appbundle_comments_comment" name="appbundle_comments[comment]" required="required"  placeholder="Press enter to post comment"/>
+                                </div>
+                                <input type="text" hidden="hidden" value="{{ post.id }}" id="appbundle_comments_post" name="appbundle_comments[post]" required="required"/>
+                                {{ form_widget(commentForms[loop.index-1]._token) }}
+                                <div class="form-group ">
+                                    <div class="col-md-2 pull-right" style="margin-top: 10px;">
+                                     <input type="submit" value="Comment" class="btn btn-primary btn-block btn-flat">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.box-footer -->
+                </div>
+
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Latest Members</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body no-padding">
+                    <ul class="users-list clearfix">
+                        {% for u in all_users %}
+                        <li>
+                            <img src="{{ asset('bundles/app/img/user1-128x128.jpg') }}" alt="User Image">
+                            <a class="users-list-name" href="{{ path('friend_profile', {'username':u.username}) }}">
+                                {{ u.lastname }}
+                                <span class="users-list-date">{{ u.firstname }} </span>
+                            </a>
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+                    <!-- /.users-list -->
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer text-center">
+                    <!--
+                    <a href="javascript:void(0)" class="uppercase">View All Users</a>
+                    -->
+                </div>
+                <!-- /.box-footer -->
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}

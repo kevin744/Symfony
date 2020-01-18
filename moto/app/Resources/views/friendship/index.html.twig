@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Friendships list</h1>
+
+
+    <div class="row">
+        <div class="col-lg-6 col-sm-12">
+            <h3 class="text-center">My friends</h3>
+            <table class="table table-bordered table-responsive table-hover">
+                <tr>
+                    <th>Friend</th>
+                    <th>Since</th>
+                    <th>Request accepted</th>
+                </tr>
+                {% for friendship in friendships %}
+                    <tr>
+                        <td><a href="{{ path('friend_profile', { 'username': friendship.friend.username }) }}">{{ friendship.friend.username }}</a></td>
+                        <td>{% if friendship.createdAt %}{{ friendship.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        <td>{% if friendship.isAccepted %}Yes{% else %}No{% endif %}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="col-lg-6 col-sm-12">
+            <h3 class="text-center">My followers</h3>
+            <table class="table table-bordered table-responsive table-hover">
+                <tr>
+                    <th>Follower</th>
+                    <th>Since</th>
+                    <th>Request accepted</th>
+                </tr>
+                {% for friendship in followers %}
+                    <tr>
+                        <td>
+                            {% if app.user.username == friendship.friend.username %}
+                                <a href="{{ path('friend_profile', { 'username': friendship.user.username }) }}">{{ friendship.user.username }}</a>
+                            {% else %}
+                                <a href="{{ path('friend_profile', { 'username': friendship.friend.username }) }}">{{ friendship.friend.username }}</a>
+                            {% endif %}
+
+                        </td>
+                        <td>{% if friendship.createdAt %}{{ friendship.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        <td>{% if friendship.isAccepted %}Yes{% else %}No{% endif %}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+
+{% endblock %}

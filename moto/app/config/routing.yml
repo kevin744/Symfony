@@ -1,0 +1,23 @@
+app_event:
+    resource: "@AppBundle/Controller/EventController.php"
+    type:     annotation
+
+app_friendship:
+    resource: "@AppBundle/Controller/FriendshipController.php"
+    type:     annotation
+
+app_comments:
+    resource: "@AppBundle/Controller/CommentsController.php"
+    type:     annotation
+
+mail:
+    resource: "@MailBundle/Controller/"
+    type:     annotation
+    prefix:   /mails
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"

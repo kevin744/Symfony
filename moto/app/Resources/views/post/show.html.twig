@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}{{ post.title }}{% endblock %}
+
+{% block body %}
+
+<div class="box box-widget">
+    <div class="box-header with-border">
+        <div class="user-block">
+            <img class="img-circle" src="{{ asset('bundles/app/img/user1-128x128.jpg') }}" alt="User Image">
+            <span class="username"><a href="#">{{ post.createdBy.firstname }} {{ post.createdBy.lastname }}</a></span>
+            <span class="description">Shared - {{ post.createdAt|date('d-M-Y H:i:s') }}</span>
+        </div>
+        <!-- /.user-block -->
+        <div class="box-tools">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+        </div>
+        <!-- /.box-tools -->
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <!-- post text -->
+        <h3>{{ post.title }}</h3>
+        <p>
+            {{ post.content }}
+        </p>
+        <!-- Social sharing buttons -->
+        {% if post.attached %}
+            <a target="_blank" href="{{ asset('uploads/files/' ~ post.attached) }}" type="button" class="btn btn-default btn-xs"><i class="fa fa-file"></i> Download attached file</a>
+        {% endif %}
+        <span class="pull-right text-muted">{{ post.comments|length }} comments</span>
+    </div>
+    <div class="box-footer">
+
+
+            <a href="{{ path('api_posts_index') }}" type="button" class="btn btn-default">
+                <i class="fa fa-step-backward"></i> Back
+            </a>
+            <a href="{{ path('api_posts_edit', { 'id': post.id }) }}" type="button" class="btn btn-primary">
+                <i class="fa fa-pencil"></i>Edit
+            </a>
+        <a>
+        {{ form_start(delete_form) }}
+            <input class="btn btn-danger" type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </a>
+    </div>
+</div>
+
+
+{% endblock %}

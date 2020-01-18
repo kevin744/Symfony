@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block title %}Accueil!{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-md-6">
+            <ul>
+            {% for f in friends %}
+                <li>{{ f.friend.firstname }} {{ f.friend.lastname }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+
+        <div class="col-md-6">
+            <ul>
+                {% for f in friends_with_me %}
+                    <li>{{ f.friend.firstname }} {{ f.friend.lastname }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}

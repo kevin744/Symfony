@@ -1,0 +1,46 @@
+{% extends "::base.html.twig" %}
+
+{% block page_title %}{{ user.firstname|capitalize }} {{ user.lastname|capitalize }}{% endblock %}
+{% block page_subtitle %}Profile{% endblock %}
+{% block breadcrumb %} > Profile{% endblock %}
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-offset-4 col-md-4">
+
+            <!-- Profile Image -->
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    <img class="profile-user-img img-responsive img-circle" src="{{ asset('bundles/app/img/user1-128x128.jpg') }}" alt="User profile picture">
+
+                    <h3 class="profile-username text-center">{{ user.firstname|capitalize }} {{ user.lastname|capitalize }}</h3>
+                    {% if user.job %}
+                    <p class="text-muted text-center">{{ user.job }}</p>
+                    {% endif %}
+
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                            <b>Username</b> <a class="pull-right">{{ user.username }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Date of birth</b> <a class="pull-right">{{ user.dob|date('d F Y') }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Email</b> <a class="pull-right">{{ user.email }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Friends</b> <a class="pull-right">13,287</a>
+                        </li>
+                    </ul>
+
+                    <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-primary btn-block"><b>Edit my profile</b></a>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+
+    </div>
+
+{% endblock %}
